@@ -25,12 +25,17 @@ class Book(db.Model):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     form = request.form
-    if form:
-        book_title = form.get('title')
-        book = Book(title=book_title)
 
-        db.session.add(book)
-        db.session.commit()
+    if form:
+        try:
+            book_title = form.get('title')
+            book = Book(title=book_title)
+
+            db.session.add(book)
+            db.session.commit()
+
+        except Exception:
+            pass
 
     books = Book.query.all()
     return render_template('home.html', books=books)
@@ -39,11 +44,33 @@ def home():
 @app.route('/update', methods=['POST'])
 def update():
     form = request.form
-    new_title = form.get('new_title')
-    old_title = form.get('old_title')
 
-    book = Book.query.filter_by(title=old_title).first()
-    book.title = new_title
-    db.session.commit()
+    try:
+        new_title = form.get('new_title')
+        old_title = form.get('old_title')
+
+        book = Book.query.filter_by(title=old_title).first()
+        book.title = new_title
+        db.session.commit()
+
+    except Exception:
+        pass
+
+    return redirect('/')
+
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    form = request.form
+
+    try:
+        book_title = form.get('title')
+        book = Book.query.filter_by(title=book_title).first()
+
+        db.session.delete(book)
+        db.session.commit()
+
+    except Exception:
+        pass
 
     return redirect('/')
