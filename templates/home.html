@@ -10,9 +10,9 @@
     {% for book in books %}
         <p>{{book.title}}</p>
         <form method="POST" action="/update">
-        <input type="hidden" value="{{book.title}}" name="old_title">
-        <input type="text" value="{{book.title}}" name="new_title">
-        <input type="submit" value="Update">
+            <input type="hidden" value="{{book.title}}" name="old_title">
+            <input type="text" value="{{book.title}}" name="new_title">
+            <input type="submit" value="Update">
         </form>
     {% endfor %}
   </body>
