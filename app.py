@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask import render_template
+from flask import render_template, redirect
 from flask import request
 
 from flask_sqlalchemy import SQLAlchemy
@@ -34,3 +34,16 @@ def home():
 
     books = Book.query.all()
     return render_template('home.html', books=books)
+
+
+@app.route('/update', methods=['POST'])
+def update():
+    form = request.form
+    new_title = form.get('new_title')
+    old_title = form.get('old_title')
+
+    book = Book.query.filter_by(title=old_title).first()
+    book.title = new_title
+    db.session.commit()
+
+    return redirect('/')
