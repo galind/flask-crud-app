@@ -32,4 +32,5 @@ def home():
         db.session.add(book)
         db.session.commit()
 
-    return render_template('home.html')
+    books = Book.query.all()
+    return render_template('home.html', books=books)
